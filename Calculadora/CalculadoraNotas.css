@@ -1,18 +1,15 @@
-/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* BASE */
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f4f6f8;
   color: #333;
 }
 
-/* HEADER */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -42,7 +39,6 @@ body {
   color: #d1d5db;
 }
 
-/* LOGO */
 .logo-img {
   width: 240px;
   height: auto;
@@ -52,12 +48,10 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* CONTENIDO */
 .app-container {
   padding: 40px;
 }
 
-/* TARJETAS */
 .card {
   background: white;
   border-radius: 12px;
@@ -66,13 +60,11 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* TITULOS */
 h2 {
   margin-bottom: 16px;
   font-size: 20px;
 }
 
-/* FORMULARIOS */
 .grid-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -100,14 +92,12 @@ button:hover {
   background: #084c2d;
 }
 
-/* BOTONES CSV */
 .btn-group {
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
 }
 
-/* TABLA */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -132,7 +122,6 @@ tbody tr:hover {
   background: #f1f5f9;
 }
 
-/* FOOTER */
 .page-footer {
   text-align: center;
   padding: 15px;
