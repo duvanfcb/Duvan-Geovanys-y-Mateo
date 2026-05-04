@@ -17,9 +17,8 @@ document.getElementById("porcentaje-form").addEventListener("submit", e => {
 document.getElementById("estudiante-form").addEventListener("submit", e => {
     e.preventDefault();
 
-    let codigo = document.getElementById("codigo").value;
+    let codigo = document.getElementById("codigo").value.trim();
 
-    // 🔥 Validar duplicados
     let existe = estudiantes.some(est => est.codigo === codigo);
     if (existe) {
         alert("Ya existe un estudiante con ese código");
@@ -27,7 +26,7 @@ document.getElementById("estudiante-form").addEventListener("submit", e => {
     }
 
     estudiantes.push({
-        nombre: document.getElementById("nombre").value,
+        nombre: document.getElementById("nombre").value.trim(),
         codigo: codigo,
         c1: parseFloat(document.getElementById("corte1").value) || null,
         c2: parseFloat(document.getElementById("corte2").value) || null,
@@ -75,8 +74,17 @@ function renderTabla() {
     const tbody = document.querySelector("#estudiantes-table tbody");
     tbody.innerHTML = "";
 
-    // 🔥 ORDENAR POR CÓDIGO
-    estudiantes.sort((a, b) => a.codigo.localeCompare(b.codigo));
+    // 🔥 ORDEN INTELIGENTE
+    estudiantes.sort((a, b) => {
+        let numA = Number(a.codigo);
+        let numB = Number(b.codigo);
+
+        if (!isNaN(numA) && !isNaN(numB)) {
+            return numA - numB;
+        } else {
+            return a.codigo.localeCompare(b.codigo);
+        }
+    });
 
     estudiantes.forEach((e, i) => {
         const tr = document.createElement("tr");
@@ -152,8 +160,8 @@ document.getElementById("importar-csv").onchange = function () {
             if (!n) return;
 
             let nuevo = {
-                nombre: n,
-                codigo: c,
+                nombre: n.trim(),
+                codigo: c.trim(),
                 c1: c1 ? parseFloat(c1) : null,
                 c2: c2 ? parseFloat(c2) : null,
                 c3: c3 ? parseFloat(c3) : null
@@ -162,14 +170,22 @@ document.getElementById("importar-csv").onchange = function () {
             let index = estudiantes.findIndex(e => e.codigo === nuevo.codigo);
 
             if (index !== -1) {
-                estudiantes[index] = nuevo; // 🔥 actualiza
+                let actual = estudiantes[index];
+
+                // 🔥 MEZCLA INTELIGENTE (NO BORRA DATOS)
+                estudiantes[index] = {
+                    nombre: nuevo.nombre || actual.nombre,
+                    codigo: actual.codigo,
+                    c1: nuevo.c1 ?? actual.c1,
+                    c2: nuevo.c2 ?? actual.c2,
+                    c3: nuevo.c3 ?? actual.c3
+                };
             } else {
-                estudiantes.push(nuevo); // 🔥 agrega
+                estudiantes.push(nuevo);
             }
         });
 
-        // 🔥 Permite volver a importar el mismo archivo
-        this.value = "";
+        this.value = ""; // permitir reimportar
 
         renderTabla();
     };
