@@ -1,5 +1,5 @@
 let estudiantes = [];
-let porcentajes = [30, 30, 40];
+let porcentajes = [0, 0, 0];
 
 // 🔥 ENCABEZADOS DINÁMICOS
 function actualizarEncabezados() {
@@ -17,8 +17,13 @@ document.getElementById("porcentaje-form").addEventListener("submit", e => {
 
     let total = p1 + p2 + p3;
 
+    if (p1 < 0 || p2 < 0 || p3 < 0) {
+        alert("Los porcentajes no pueden ser negativos");
+        return;
+    }
+
     if (total !== 100) {
-        alert("Los porcentajes deben sumar 100%");
+        alert("Los porcentajes deben sumar exactamente 100%");
         return;
     }
 
