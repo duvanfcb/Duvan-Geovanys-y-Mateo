@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Calificaciones</title>
+    <link rel="stylesheet" href="CalculadoraNotas.css">
+</head>
+<body>
+
+<div class="page-shell">
+
+    <!-- HEADER -->
+    <header class="page-header">
+        <div class="brand-copy">
+            <span class="brand-label">Universidad de Córdoba</span>
+            <h1>Calculadora de Calificaciones</h1>
+            <p>Herramienta académica institucional</p>
+        </div>
+
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Logo Universidad de Córdoba" class="logo-img">
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="app-container">
+
+        <!-- PORCENTAJES -->
+        <section class="card">
+            <h2>Configuración de porcentajes</h2>
+            <form id="porcentaje-form" class="grid-form">
+                <input type="number" id="corte1-porcentaje" placeholder="Corte 1 (%)">
+                <input type="number" id="corte2-porcentaje" placeholder="Corte 2 (%)">
+                <input type="number" id="corte3-porcentaje" placeholder="Corte 3 (%)">
+                <button type="submit">Guardar</button>
+            </form>
+        </section>
+
+        <!-- AGREGAR ESTUDIANTE -->
+        <section class="card">
+            <h2>Agregar estudiante</h2>
+            <form id="estudiante-form" class="grid-form">
+                <input type="text" id="nombre" placeholder="Nombre" required>
+                <input type="text" id="codigo" placeholder="Código" required>
+                <input type="number" id="corte1" placeholder="Corte 1">
+                <input type="number" id="corte2" placeholder="Corte 2">
+                <input type="number" id="corte3" placeholder="Corte 3">
+                <button type="submit">Agregar</button>
+            </form>
+        </section>
+
+        <!-- TABLA -->
+        <section class="card">
+            <h2>Lista de estudiantes</h2>
+
+            <div class="btn-group">
+                <button id="exportar-btn">Exportar CSV</button>
+                <button id="importar-btn">Importar CSV</button>
+                <input type="file" id="importar-csv" hidden>
+            </div>
+
+            <table id="estudiantes-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Código</th>
+                        <th>C1</th>
+                        <th>C2</th>
+                        <th>C3</th>
+                        <th>Definitiva</th>
+                        <th>Para 3.0</th>
+                        <th>Para 5.0</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+        <p>Hecho por: Mateo Angulo, Duvan Calderin y Geovanys Stiven</p>
+    </footer>
+
+</div>
+
+<script src="CalculadoraNotas.js" defer></script>
+</body>
+</html>
