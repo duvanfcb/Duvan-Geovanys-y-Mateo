@@ -17,9 +17,18 @@ document.getElementById("porcentaje-form").addEventListener("submit", e => {
 document.getElementById("estudiante-form").addEventListener("submit", e => {
     e.preventDefault();
 
+    let codigo = document.getElementById("codigo").value;
+
+    // 🔥 Validar duplicados
+    let existe = estudiantes.some(est => est.codigo === codigo);
+    if (existe) {
+        alert("Ya existe un estudiante con ese código");
+        return;
+    }
+
     estudiantes.push({
         nombre: document.getElementById("nombre").value,
-        codigo: document.getElementById("codigo").value,
+        codigo: codigo,
         c1: parseFloat(document.getElementById("corte1").value) || null,
         c2: parseFloat(document.getElementById("corte2").value) || null,
         c3: parseFloat(document.getElementById("corte3").value) || null
@@ -133,20 +142,32 @@ document.getElementById("importar-csv").onchange = function () {
     const reader = new FileReader();
 
     reader.onload = e => {
-        estudiantes = [];
+        const lineas = e.target.result.split("\n").slice(1);
 
-        e.target.result.split("\n").slice(1).forEach(f => {
+        lineas.forEach(f => {
             const [n, c, c1, c2, c3] = f.split(",");
             if (!n) return;
 
-            estudiantes.push({
+            let nuevo = {
                 nombre: n,
                 codigo: c,
                 c1: c1 ? parseFloat(c1) : null,
                 c2: c2 ? parseFloat(c2) : null,
                 c3: c3 ? parseFloat(c3) : null
-            });
+            };
+
+            // 🔥 Buscar si ya existe
+            let index = estudiantes.findIndex(e => e.codigo === nuevo.codigo);
+
+            if (index !== -1) {
+                estudiantes[index] = nuevo; // actualizar
+            } else {
+                estudiantes.push(nuevo); // agregar
+            }
         });
+
+        // 🔥 Permite volver a importar el mismo archivo
+        this.value = "";
 
         renderTabla();
     };
