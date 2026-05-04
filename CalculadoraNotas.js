@@ -1,16 +1,30 @@
 let estudiantes = [];
 let porcentajes = [30, 30, 40];
 
+// 🔥 ENCABEZADOS DINÁMICOS
+function actualizarEncabezados() {
+    document.getElementById("th-c1").textContent = `C1 (${porcentajes[0]}%)`;
+    document.getElementById("th-c2").textContent = `C2 (${porcentajes[1]}%)`;
+    document.getElementById("th-c3").textContent = `C3 (${porcentajes[2]}%)`;
+}
+
 document.getElementById("porcentaje-form").addEventListener("submit", e => {
     e.preventDefault();
 
-    porcentajes = [
-        parseFloat(document.getElementById("corte1-porcentaje").value) || 0,
-        parseFloat(document.getElementById("corte2-porcentaje").value) || 0,
-        parseFloat(document.getElementById("corte3-porcentaje").value) || 0
-    ];
+    let p1 = parseFloat(document.getElementById("corte1-porcentaje").value) || 0;
+    let p2 = parseFloat(document.getElementById("corte2-porcentaje").value) || 0;
+    let p3 = parseFloat(document.getElementById("corte3-porcentaje").value) || 0;
 
-    alert("Porcentajes guardados");
+    let total = p1 + p2 + p3;
+
+    if (total !== 100) {
+        alert("Los porcentajes deben sumar 100%");
+        return;
+    }
+
+    porcentajes = [p1, p2, p3];
+
+    actualizarEncabezados();
     renderTabla();
 });
 
@@ -70,11 +84,11 @@ function calcularNecesaria(e, objetivo) {
     return necesaria.toFixed(2);
 }
 
+// 🔥 TABLA CON EDICIÓN DIRECTA
 function renderTabla() {
     const tbody = document.querySelector("#estudiantes-table tbody");
     tbody.innerHTML = "";
 
-    // 🔥 ORDEN INTELIGENTE
     estudiantes.sort((a, b) => {
         let numA = Number(a.codigo);
         let numB = Number(b.codigo);
@@ -91,24 +105,71 @@ function renderTabla() {
 
         const def = calcularDef(e);
 
-        const datos = [
-            e.nombre,
-            e.codigo,
-            e.c1 ?? "-",
-            e.c2 ?? "-",
-            e.c3 ?? "-",
-            def ?? "Pendiente",
-            def ? "N/A" : calcularNecesaria(e, 3),
-            def ? "N/A" : calcularNecesaria(e, 5)
-        ];
+        function crearInput(valor, campo) {
+            const input = document.createElement("input");
+            input.type = "number";
+            input.value = valor ?? "";
+            input.style.width = "60px";
 
-        datos.forEach(d => {
-            const td = document.createElement("td");
-            td.textContent = d;
-            tr.appendChild(td);
-        });
+            // 🔥 límites
+            input.min = 0;
+            input.max = 5;
+            input.step = 0.1;
 
-        const tdBtn = document.createElement("td");
+            input.onchange = () => {
+                let val = parseFloat(input.value);
+
+                if (isNaN(val)) {
+                    e[campo] = null;
+                } else {
+                    e[campo] = val;
+                }
+
+                renderTabla();
+            };
+
+            return input;
+        }
+
+        // Nombre
+        let tdNombre = document.createElement("td");
+        tdNombre.textContent = e.nombre;
+        tr.appendChild(tdNombre);
+
+        // Código
+        let tdCodigo = document.createElement("td");
+        tdCodigo.textContent = e.codigo;
+        tr.appendChild(tdCodigo);
+
+        // Editables
+        let tdC1 = document.createElement("td");
+        tdC1.appendChild(crearInput(e.c1, "c1"));
+        tr.appendChild(tdC1);
+
+        let tdC2 = document.createElement("td");
+        tdC2.appendChild(crearInput(e.c2, "c2"));
+        tr.appendChild(tdC2);
+
+        let tdC3 = document.createElement("td");
+        tdC3.appendChild(crearInput(e.c3, "c3"));
+        tr.appendChild(tdC3);
+
+        // Definitiva
+        let tdDef = document.createElement("td");
+        tdDef.textContent = def ?? "Pendiente";
+        tr.appendChild(tdDef);
+
+        // Predicciones
+        let td3 = document.createElement("td");
+        td3.textContent = def ? "N/A" : calcularNecesaria(e, 3);
+        tr.appendChild(td3);
+
+        let td5 = document.createElement("td");
+        td5.textContent = def ? "N/A" : calcularNecesaria(e, 5);
+        tr.appendChild(td5);
+
+        // Eliminar
+        let tdBtn = document.createElement("td");
         const btn = document.createElement("button");
 
         btn.textContent = "Eliminar";
@@ -126,6 +187,7 @@ function eliminar(i) {
     renderTabla();
 }
 
+// EXPORTAR CSV
 document.getElementById("exportar-btn").onclick = () => {
     let csv = "Nombre,Codigo,C1,C2,C3\n";
 
@@ -142,6 +204,7 @@ document.getElementById("exportar-btn").onclick = () => {
     a.click();
 };
 
+// IMPORTAR CSV
 document.getElementById("importar-btn").onclick = () => {
     document.getElementById("importar-csv").click();
 };
@@ -172,7 +235,6 @@ document.getElementById("importar-csv").onchange = function () {
             if (index !== -1) {
                 let actual = estudiantes[index];
 
-                // 🔥 MEZCLA INTELIGENTE (NO BORRA DATOS)
                 estudiantes[index] = {
                     nombre: nuevo.nombre || actual.nombre,
                     codigo: actual.codigo,
@@ -185,10 +247,12 @@ document.getElementById("importar-csv").onchange = function () {
             }
         });
 
-        this.value = ""; // permitir reimportar
-
+        this.value = "";
         renderTabla();
     };
 
     reader.readAsText(file);
 };
+
+// 🔥 INICIALIZACIÓN
+actualizarEncabezados();
