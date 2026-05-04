@@ -28,10 +28,10 @@
         <!-- PORCENTAJES -->
         <section class="card">
             <h2>Configuración de porcentajes</h2>
-            <form id="porcentaje-form" class="grid-form">
-                <input type="number" id="corte1-porcentaje" placeholder="Corte 1 (%)">
-                <input type="number" id="corte2-porcentaje" placeholder="Corte 2 (%)">
-                <input type="number" id="corte3-porcentaje" placeholder="Corte 3 (%)">
+            <form id="estudiante-form" class="grid-form" novalidate>
+                <input type="number" id="corte1-porcentaje" placeholder="Corte 1 (%)" min="0" max="100" step="0.1" inputmode="decimal">
+                 <input type="number" id="corte2-porcentaje" placeholder="Corte 2 (%)" min="0" max="100" step="0.1" inputmode="decimal">
+                 <input type="number" id="corte3-porcentaje" placeholder="Corte 3 (%)" min="0" max="100" step="0.1" inputmode="decimal">
                 <button type="submit">Guardar</button>
             </form>
         </section>
@@ -39,12 +39,12 @@
         <!-- AGREGAR ESTUDIANTE -->
         <section class="card">
             <h2>Agregar estudiante</h2>
-            <form id="estudiante-form" class="grid-form">
+            <form id="estudiante-form" class="grid-form" novalidate>
                 <input type="text" id="nombre" placeholder="Nombre" required>
                 <input type="text" id="codigo" placeholder="Código" required>
-                <input type="number" id="corte1" placeholder="Corte 1">
-                <input type="number" id="corte2" placeholder="Corte 2">
-                <input type="number" id="corte3" placeholder="Corte 3">
+                <input type="number" id="corte1" placeholder="Corte 1" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" id="corte2" placeholder="Corte 2" min="0" max="5" step="0.1" inputmode="decimal">
+                <input type="number" id="corte3" placeholder="Corte 3" min="0" max="5" step="0.1" inputmode="decimal">
                 <button type="submit">Agregar</button>
             </form>
         </section>
