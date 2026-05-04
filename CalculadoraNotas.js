@@ -75,6 +75,9 @@ function renderTabla() {
     const tbody = document.querySelector("#estudiantes-table tbody");
     tbody.innerHTML = "";
 
+    // 🔥 ORDENAR POR CÓDIGO
+    estudiantes.sort((a, b) => a.codigo.localeCompare(b.codigo));
+
     estudiantes.forEach((e, i) => {
         const tr = document.createElement("tr");
 
@@ -156,13 +159,12 @@ document.getElementById("importar-csv").onchange = function () {
                 c3: c3 ? parseFloat(c3) : null
             };
 
-            // 🔥 Buscar si ya existe
             let index = estudiantes.findIndex(e => e.codigo === nuevo.codigo);
 
             if (index !== -1) {
-                estudiantes[index] = nuevo; // actualizar
+                estudiantes[index] = nuevo; // 🔥 actualiza
             } else {
-                estudiantes.push(nuevo); // agregar
+                estudiantes.push(nuevo); // 🔥 agrega
             }
         });
 
